@@ -26,7 +26,7 @@ class PrintMethod extends ChangeNotifier {
   String comname = "CFC KANNUR";
   String cuscare = "190055666";
   String fssi = "111122223333";
-
+  
   BluetoothDevice? selectedPrinter;
   String profile_string = '';
   Map<String, dynamic> selecteditem = {};
@@ -276,7 +276,7 @@ class PrintMethod extends ChangeNotifier {
         .replaceAll("<PACKING>".toUpperCase(), pkng)
         .replaceAll("<MRP>".toUpperCase(), mrp)
         .replaceAll("<Qty>".toUpperCase(), qty)
-        .replaceAll("<UNIT>".toUpperCase(), unit)
+        .replaceAll("<UNIT>".toUpperCase(), " ") //unit
         .replaceAll("<MfgDate>".toUpperCase(), mfg)
         .replaceAll("<UseBefore>".toUpperCase(), usebefor)
         .replaceAll("<CustomerCare>".toUpperCase(), cuscare.toString())

@@ -33,33 +33,38 @@ class _PrintPageState extends State<PrintPage> {
   String formattedDate = "";
   Map<String, dynamic>? selectedItem;
   int? selectedItemId;
-  String pro="";
-  String pro_name="";
+  String pro = "";
+  String pro_name = "";
   @override
   void initState() {
     String datetoday = DateFormat('dd-MM-yyyy').format(DateTime.now());
     dateInput.text = DateFormat('dd-MM-yyyy').format(DateTime.now());
-
+    qty_ctrl.text = "1";
     Provider.of<PrintMethod>(context, listen: false).getItemList();
     getProfile();
     super.initState();
   }
-getProfile() async {
+
+  getProfile() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     pro = prefs.getString("prof_string")!;
-   pro_name = prefs.getString("label_name")!;
+    pro_name = prefs.getString("label_name")!;
   }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     print(size.width);
     return Scaffold(
-      appBar: AppBar(title: Consumer<PrintMethod>(
-        builder: (BuildContext context, PrintMethod value, Widget? child) { return Text(pro_name.toString());}),
-          // actions: [
-          //   IconButton(onPressed: () {}, icon: Icon(Icons.document_scanner_sharp))
-          // ],
-          ),
+      appBar: AppBar(
+        title: Consumer<PrintMethod>(
+            builder: (BuildContext context, PrintMethod value, Widget? child) {
+          return Text(pro_name.toString());
+        }),
+        // actions: [
+        //   IconButton(onPressed: () {}, icon: Icon(Icons.document_scanner_sharp))
+        // ],
+      ),
       body: Consumer<PrintMethod>(
         builder: (BuildContext context, PrintMethod value, Widget? child) {
           return Center(
@@ -173,262 +178,350 @@ getProfile() async {
                             ),
                             selectedName!.isEmpty
                                 ? Container()
-                                : Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          SizedBox(
-                                            height: 35,
-                                            width: 100,
-                                            child: Text("CODE",
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w600)),
-                                          ),
-                                          SizedBox(
-                                            width: 200,
-                                            height: 35,
-                                            child: Text(selectedCode,
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w500)),
-                                          )
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          SizedBox(
-                                            height: 35,
-                                            width: 100,
-                                            child: Text(
-                                              "PACKING",
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 200,
-                                            height: 35,
-                                            child: Text(selectedPack,
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w500)),
-                                          )
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          SizedBox(
-                                            height: 35,
-                                            width: 100,
-                                            child: Text("UNIT",
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w600)),
-                                          ),
-                                          SizedBox(
-                                            width: 200,
-                                            height: 35,
-                                            child: Text(selectedUnit,
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w500)),
-                                          )
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          SizedBox(
-                                            height: 35,
-                                            width: 100,
-                                            child: Text("MRP",
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w600)),
-                                          ),
-                                          SizedBox(
-                                            width: 200,
-                                            height: 35,
-                                            child: Text("$selectedRate \u20B9",
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w500)),
-                                          )
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          SizedBox(
-                                            height: 35,
-                                            width: 100,
-                                            child: Text("MFG",
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w600)),
-                                          ),
-                                          SizedBox(
-                                            height: 40,
-                                            width: 200,
-                                            child: TextField(
-                                              controller: dateInput,
-                                              //editing controller of this TextField
-                                              decoration: InputDecoration(
-                                                border: InputBorder.none,
-                                                // contentPadding:
-                                                //     EdgeInsets.only(top: 5, bottom: 5),
-                                                icon: Icon(Icons
-                                                    .calendar_today), //icon of text field
-                                                //label text of field
-                                              ),
-                                              readOnly: true,
-                                              //set it true, so that user will not able to edit text
-                                              onTap: () async {
-                                                DateTime? pickedDate =
-                                                    await showDatePicker(
-                                                        context: context,
-                                                        initialDate:
-                                                            DateTime.now(),
-                                                        firstDate:
-                                                            DateTime(1950),
-                                                        //DateTime.now() - not to allow to choose before today.
-                                                        lastDate:
-                                                            DateTime(2100));
-
-                                                if (pickedDate != null) {
-                                                  print(pickedDate);
-                                                  formattedDate =
-                                                      DateFormat('dd-MM-yyyy')
-                                                          .format(pickedDate);
-                                                  print(formattedDate);
-                                                  DateTime newDate =
-                                                      pickedDate.add(Duration(
-                                                          days: int.parse(
-                                                              selectedExp
-                                                                  .toString()))); //formatted date output using intl package =>  2021-03-16
-                                                  setState(() {
-                                                    dateInput.text =
-                                                        DateFormat('dd-MM-yyyy')
-                                                            .format(pickedDate);
-                                                    expdateInput.text =
-                                                        DateFormat('dd-MM-yyyy')
-                                                            .format(newDate);
-                                                    print(
-                                                        "newDate----$newDate");
-                                                  });
-                                                } else {}
-                                              },
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          SizedBox(
-                                            height: 35,
-                                            width: 100,
-                                            child: Text("Use Before",
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w600)),
-                                          ),
-                                          SizedBox(
-                                            height: 40,
-                                            width: 200,
-                                            child: TextField(
-                                              controller: expdateInput,
-                                              //editing controller of this TextField
-                                              decoration: InputDecoration(
-                                                border: InputBorder.none,
-                                                icon:
-                                                    Icon(Icons.calendar_today),
-                                                // contentPadding:
-                                                //     EdgeInsets.only(top: 5, bottom: 5),
-                                                // icon: Icon(Icons
-                                                //     .calendar_today), //icon of text field
-                                                //label text of field
-                                              ),
-                                              readOnly: true,
-                                              //set it true, so that user will not able to edit text
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(left: 6),
-                                        child: Row(
+                                : Padding(
+                                    padding: const EdgeInsets.only(left: 6),
+                                    child: Column(
+                                      children: [
+                                        Row(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.start,
+                                              MainAxisAlignment.center,
                                           children: [
                                             SizedBox(
                                               height: 35,
-                                              width: 100,
-                                              child: Text("Quantity",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600)),
+                                              width: 90,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text("CODE",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600)),
+                                                  Text(": "),
+                                                ],
+                                              ),
                                             ),
                                             SizedBox(
-                                                height: 40,
-                                                width: 80,
-                                                child: TextFormField(
-                                                  decoration: InputDecoration(
-                                                      border:
-                                                          OutlineInputBorder()),
-                                                  controller: qty_ctrl,
-                                                  keyboardType:
-                                                      TextInputType.number,
-                                                  validator: (text) {
-                                                    if (text == null ||
-                                                        text.isEmpty) {
-                                                      return 'Please Enter quantity';
-                                                    }
-                                                    return null;
-                                                  },
-                                                )
-                                                //  Widget_TextField(
-                                                //   isSuffix: true,
-                                                //   controller: qty_ctrl,
-                                                //   obscureNotifier: ValueNotifier<bool>(
-                                                //       false), // For non-password field, you can set any initial value
-                                                //   hintText: 'QTY',
-                                                //   prefixIcon: Icons.numbers,
-                                                //   typeoffld: TextInputType.number,
-                                                //   validator: (text) {
-                                                //     if (text == null || text.isEmpty) {
-                                                //       return 'Please Enter quantity';
-                                                //     }
-                                                //     return null;
-                                                //   },
-                                                // ),
-                                                ),
+                                              width: 200,
+                                              height: 25,
+                                              child: Text(selectedCode,
+                                                  style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16,
+                                                  )),
+                                            )
                                           ],
                                         ),
-                                      ),
-                                    ],
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              height: 35,
+                                              width: 90,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    "PACKING",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                                  ),
+                                                  Text(": "),
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 200,
+                                              height: 25,
+                                              child: Text(selectedPack,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500)),
+                                            )
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              height: 35,
+                                              width: 90,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text("UNIT",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600)),
+                                                  Text(": "),
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 200,
+                                              height: 25,
+                                              child: Text(selectedUnit,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500)),
+                                            )
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              height: 35,
+                                              width: 90,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text("MRP",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600)),
+                                                  Text(": "),
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: 200,
+                                              height: 25,
+                                              child: Text(
+                                                  "${double.parse(selectedRate.toString()).toStringAsFixed(2)} \u20B9",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500)),
+                                            )
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              height: 35,
+                                              width: 90,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text("MFG",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600)),
+                                                  Text(": "),
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 35,
+                                              width: 200,
+                                              child: TextField(
+                                                controller: dateInput,
+                                                //editing controller of this TextField
+                                                decoration: InputDecoration(
+                                                  border: InputBorder.none,
+                                                  // contentPadding:
+                                                  //     EdgeInsets.only(top: 5, bottom: 5),
+                                                  icon: Icon(Icons
+                                                      .calendar_today), //icon of text field
+                                                  //label text of field
+                                                ),
+                                                readOnly: true,
+                                                //set it true, so that user will not able to edit text
+                                                onTap: () async {
+                                                  DateTime? pickedDate =
+                                                      await showDatePicker(
+                                                          context: context,
+                                                          initialDate:
+                                                              DateTime.now(),
+                                                          firstDate:
+                                                              DateTime(1950),
+                                                          //DateTime.now() - not to allow to choose before today.
+                                                          lastDate:
+                                                              DateTime(2100));
+
+                                                  if (pickedDate != null) {
+                                                    print(pickedDate);
+                                                    formattedDate =
+                                                        DateFormat('dd-MM-yyyy')
+                                                            .format(pickedDate);
+                                                    print(formattedDate);
+                                                    DateTime newDate =
+                                                        pickedDate.add(Duration(
+                                                            days: int.parse(
+                                                                selectedExp
+                                                                    .toString()))); //formatted date output using intl package =>  2021-03-16
+                                                    setState(() {
+                                                      dateInput
+                                                          .text = DateFormat(
+                                                              'dd-MM-yyyy')
+                                                          .format(pickedDate);
+                                                      expdateInput.text =
+                                                          DateFormat(
+                                                                  'dd-MM-yyyy')
+                                                              .format(newDate);
+                                                      print(
+                                                          "newDate----$newDate");
+                                                    });
+                                                  } else {}
+                                                },
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            SizedBox(
+                                              height: 35,
+                                              width: 90,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text("Use Before",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600)),
+                                                  Text(": "),
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 35,
+                                              width: 200,
+                                              child: TextField(
+                                                controller: expdateInput,
+                                                //editing controller of this TextField
+                                                decoration: InputDecoration(
+                                                  border: InputBorder.none,
+                                                  icon: Icon(
+                                                      Icons.calendar_today),
+                                                  // contentPadding:
+                                                  //     EdgeInsets.only(top: 5, bottom: 5),
+                                                  // icon: Icon(Icons
+                                                  //     .calendar_today), //icon of text field
+                                                  //label text of field
+                                                ),
+                                                readOnly: true,
+                                                //set it true, so that user will not able to edit text
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 6),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              SizedBox(
+                                                height: 23,
+                                                width: 90,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text("Label Count",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600)),
+                                                    Text(": "),
+                                                  ],
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 35,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    IconButton(
+                                                        onPressed: () {
+                                                          if (qty_ctrl.text ==
+                                                              "1") {
+                                                            qty_ctrl.text = "1";
+                                                          } else {
+                                                            qty_ctrl.text =
+                                                                (int.parse(qty_ctrl
+                                                                            .text) -
+                                                                        1)
+                                                                    .toString();
+                                                          }
+                                                        },
+                                                        icon:
+                                                            Icon(Icons.remove)),
+                                                    SizedBox(
+                                                        height: 35,
+                                                        width: 40,
+                                                        child: TextFormField(
+                                                          decoration: InputDecoration(
+                                                              contentPadding:
+                                                                  EdgeInsets.only(bottom: 10,left: 10),
+                                                              border:
+                                                                  OutlineInputBorder()),
+                                                          controller: qty_ctrl,
+                                                          keyboardType:
+                                                              TextInputType
+                                                                  .number,
+                                                          validator: (text) {
+                                                            if (text == null ||
+                                                                text.isEmpty) {
+                                                              return 'Please Enter quantity';
+                                                            }
+                                                            return null;
+                                                          },
+                                                        )),
+                                                    IconButton(
+                                                        onPressed: () {
+                                                          qty_ctrl.text =
+                                                              (int.parse(qty_ctrl
+                                                                          .text) +
+                                                                      1)
+                                                                  .toString();
+                                                        },
+                                                        icon: Icon(Icons.add)),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                             const SizedBox(
                               height: 20,
@@ -461,30 +554,31 @@ getProfile() async {
                         ),
                         onPressed: () {
                           // if (_formKey.currentState!.validate()) {
-                            if (selectedName.isEmpty) {
-                              CustomSnackbar snackbar = CustomSnackbar();
-                              snackbar.showSnackbar(context, "Select item", "");
-                            } else if (qty_ctrl.text.isEmpty) {
-                              CustomSnackbar snackbar = CustomSnackbar();
-                              snackbar.showSnackbar(
-                                  context, "Enter Quantity", "");
-                            } else {
-                              value.printLabel(
-                                  selectedCode,
-                                  selectedName,
-                                  selectedPack,
-                                  selectedRate,
-                                  qty_ctrl.text.toString(),
-                                  selectedUnit,
-                                  dateInput.text.toString(),
-                                  expdateInput.text.toString());
-                            }
+                          if (selectedName.isEmpty) {
+                            CustomSnackbar snackbar = CustomSnackbar();
+                            snackbar.showSnackbar(context, "Select item", "");
+                          } else if (qty_ctrl.text.isEmpty) {
+                            CustomSnackbar snackbar = CustomSnackbar();
+                            snackbar.showSnackbar(
+                                context, "Enter Quantity", "");
+                          } else {
+                            double mrp=double.parse(selectedRate.toString());
+                            String mrprate="${mrp.toStringAsFixed(2).toString()} \u20B9".toString();
+                            value.printLabel(
+                                selectedCode,
+                                selectedName,
+                                selectedPack,
+                                mrprate,
+                                qty_ctrl.text.toString(),
+                                selectedUnit,
+                                dateInput.text.toString(),
+                                expdateInput.text.toString());
+                          }
 
-                            // barcode_ctrl.clear();
-                            // qty_ctrl.clear();
-                            // sale_ctrl.clear();
-                            // "${barcode_ctrl.text}\u0023${qty_ctrl.text}");
-                        
+                          // barcode_ctrl.clear();
+                          // qty_ctrl.clear();
+                          // sale_ctrl.clear();
+                          // "${barcode_ctrl.text}\u0023${qty_ctrl.text}");
                         },
                       ),
                     ),

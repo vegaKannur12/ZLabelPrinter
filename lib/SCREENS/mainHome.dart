@@ -8,6 +8,7 @@ import 'package:simplefluttre/CONTROLLER/printClass.dart';
 import 'package:simplefluttre/SCREENS/blutoothCon.dart';
 import 'package:simplefluttre/SCREENS/itemAdd.dart';
 import 'package:simplefluttre/SCREENS/itemEdit.dart';
+import 'package:simplefluttre/SCREENS/otherEdit.dart';
 
 class MainHome extends StatefulWidget {
   const MainHome({super.key});
@@ -30,7 +31,7 @@ class _MainHomeState extends State<MainHome> {
     Menus(iconname: 'ITEM', iconimg: 'assets/add.png'),
     Menus(iconname: 'ITEM', iconimg: 'assets/edit.png'),
     Menus(iconname: 'STICKER', iconimg: 'assets/print.png'),
-    Menus(iconname: 'STICKER', iconimg: 'assets/print.png'),
+    Menus(iconname: ' OTHER\r\nDETAILS', iconimg: 'assets/edit.png'),
   ];
 
   @override
@@ -134,11 +135,19 @@ class _MainHomeState extends State<MainHome> {
                             context,
                             MaterialPageRoute(builder: (context) => ItemEdit()),
                           );
-                        } else if (index == 2) {
+                        } 
+                        else if (index == 2) {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => BluetoothConnection()),
+                          );
+                        }
+                         else if (index == 3) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => OtherEdit()),
                           );
                         }
                       },
@@ -163,7 +172,8 @@ class _MainHomeState extends State<MainHome> {
         //     style: TextStyle(fontSize: 10),
         //   ),
         // ),
-      )),
+      )
+      ),
     );
   }
 }

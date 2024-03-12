@@ -56,6 +56,7 @@ class MyApp extends StatelessWidget {
       // ConnectSelection()
       // PrintPage(),
       MainHome(),
+      // AdminHomePage(),
       localizationsDelegates: const [
         GlobalWidgetsLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,

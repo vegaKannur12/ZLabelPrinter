@@ -36,7 +36,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                   children: [
                     Center(
                       child: Text(
-                        "Download Label Config here..!",
+                        "Download & Edit Label Config here..",
                         style: TextStyle(
                           fontSize: 18,
                           color: Colors.green,
