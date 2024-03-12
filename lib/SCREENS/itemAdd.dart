@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:simplefluttre/COMPONENTS/custom_snackbar.dart';
 import 'package:simplefluttre/COMPONENTS/textfldCommon.dart';
 import 'package:simplefluttre/CONTROLLER/printClass.dart';
 import 'package:simplefluttre/LOCALDB/localDb.dart';
@@ -34,7 +35,7 @@ class _ItemADDState extends State<ItemADD> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
+      appBar: AppBar(backgroundColor: Colors.red,title: Center(child: Text("ADD ITEM",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),)),
           // actions: [
           //   IconButton(onPressed: () {}, icon: Icon(Icons.document_scanner_sharp))
           // ],
@@ -248,7 +249,7 @@ class _ItemADDState extends State<ItemADD> {
                       width: 150,
                       child: ElevatedButton(
                         child: Text(
-                          "ADD",
+                          "ADD",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black,
@@ -256,7 +257,32 @@ class _ItemADDState extends State<ItemADD> {
                           elevation: 0,
                         ),
                         onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
+                          // if (_formKey.currentState!.validate()) {
+                            if (name_ctrl.text.isEmpty) {
+                              CustomSnackbar snackbar = CustomSnackbar();
+                              snackbar.showSnackbar(context, "Enter Name", "");
+                              
+                            }
+                            else if(code_ctrl.text.isEmpty)
+                            {
+                              CustomSnackbar snackbar = CustomSnackbar();
+                              snackbar.showSnackbar(context, "Enter Code", "");
+
+                            }
+                            else if(rate_ctrl.text.isEmpty)
+                            {
+                              CustomSnackbar snackbar = CustomSnackbar();
+                              snackbar.showSnackbar(context, "Enter Rate", "");
+
+                            }
+                            else if(day_ctrl.text.isEmpty)
+                            {
+                              CustomSnackbar snackbar = CustomSnackbar();
+                              snackbar.showSnackbar(context, "Enter Expiry Days", "");
+
+                            }
+                            else
+                            {
                             await BarcodeDB.instance.insertItemDetails(
                                 name_ctrl.text.toString(),
                                 code_ctrl.text.toString(),

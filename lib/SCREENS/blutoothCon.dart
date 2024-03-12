@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:simplefluttre/ADMIN/loginAdmin.dart';
+import 'package:simplefluttre/ADMIN/loginAdminDialog.dart';
 import 'package:simplefluttre/LOCALDB/localDb.dart';
 import 'package:simplefluttre/LOCALDB/tablelist.dart';
 import 'package:simplefluttre/COMPONENTS/custom_snackbar.dart';
 import 'package:simplefluttre/SCREENS/itemAdd.dart';
-import 'package:simplefluttre/SCREENS/labelselect.dart';
+import 'package:simplefluttre/ADMIN/homeAdmin.dart';
 import 'package:simplefluttre/CONTROLLER/printClass.dart';
 import 'package:simplefluttre/SCREENS/printPage.dart';
 
@@ -36,11 +38,13 @@ class _BluetoothConnectionState extends State<BluetoothConnection> {
   getProfile() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     pro = prefs.getString("prof_string")!;
-    pro_name = prefs.getString("label_name")!;
+    pro_name = prefs.getString("label_name")!; print("proofil = $pro");
+    print("proofilNM = $pro_name");
   }
 
   @override
   Widget build(BuildContext context) {
+   
     bool isSelected = false;
     return MaterialApp(
       home: Scaffold(
@@ -58,17 +62,20 @@ class _BluetoothConnectionState extends State<BluetoothConnection> {
                       await BarcodeDB.instance.getListOfTables();
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => TableList(list: list)),
+                    MaterialPageRoute(
+                        builder: (context) => TableList(list: list)),
                   );
                 },
                 icon: Icon(Icons.edit_document, color: Colors.white),
               ),
-              IconButton(onPressed: (){
-                 Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ItemADD()),
-                  );
-              }, icon: Icon(Icons.add, color: Colors.white))
+              IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ItemADD()),
+                    );
+                  },
+                  icon: Icon(Icons.add, color: Colors.white))
             ],
           ),
           actions: [
@@ -98,29 +105,30 @@ class _BluetoothConnectionState extends State<BluetoothConnection> {
                     //                   fontSize: 18, color: Colors.white),
                     //             )),
                     //       )
-                    //     : 
-                        Row(
-                            children: [
-                              Text(
-                                pro_name.toString(),
-                                style: TextStyle(
-                                    fontSize: 18, color: Colors.white),
-                              ),
-                              IconButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => LabelSelect()),
-                                    );
-                                    // setState(() {});
-                                  },
-                                  icon: Icon(
-                                    Icons.edit,
-                                    color: Colors.yellow,
-                                  ))
-                            ],
-                          )),
+                    //     :
+                    Row(
+                      children: [
+                        Text(
+                          pro_name.toString(),
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              // LoginDialog l=LoginDialog();
+                              // l.dialogBuilder(context);
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return LoginDialog();
+                                },
+                              );
+                            },
+                            icon: Icon(
+                              Icons.edit,
+                              color: Colors.yellow,
+                            ))
+                      ],
+                    )),
           ],
         ),
         body: Consumer<PrintMethod>(
@@ -201,14 +209,15 @@ class _BluetoothConnectionState extends State<BluetoothConnection> {
                                             snackbar.showSnackbar(
                                                 context, "Profile Missing", "");
                                           } else {
-                                            SchedulerBinding.instance.addPostFrameCallback((_) {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    PrintPage(),
-                                              ),
-                                            );
+                                            SchedulerBinding.instance
+                                                .addPostFrameCallback((_) {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      PrintPage(),
+                                                ),
+                                              );
                                             });
                                           }
                                         } else {

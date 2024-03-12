@@ -26,7 +26,7 @@ class BarcodeDB {
 
           )
           ''');
-          await db.execute('''
+    await db.execute('''
           CREATE TABLE itemtable (
             id INTEGER PRIMARY KEY AUTOINCREMENT,       
             name TEXT,
@@ -40,16 +40,18 @@ class BarcodeDB {
           ''');
   }
 
-Future insertItemDetails(String nm,String cd,String rt,String uty,String pkng,int exp) async {
+  Future insertItemDetails(
+      String nm, String cd, String rt, String uty, String pkng, int exp) async {
     final db = await database;
-    var qr = 'INSERT INTO itemtable(name,code,rate,unit,packing,exp_days) VALUES("$nm","$cd","$rt","$uty","$pkng",$exp)';
+    var qr =
+        'INSERT INTO itemtable(name,code,rate,unit,packing,exp_days) VALUES("$nm","$cd","$rt","$uty","$pkng",$exp)';
     var res = await db.rawInsert(qr);
     print(qr);
     print("Inserted ITEM data =====> $res");
     return res;
   }
 
- Future insertDetails(int i,String d_cod) async {
+  Future insertDetails(int i, String d_cod) async {
     final db = await database;
     var qr = 'INSERT INTO printertable(id,dynamicCode) VALUES($i,"$d_cod")';
     var res = await db.rawInsert(qr);
@@ -57,7 +59,7 @@ Future insertItemDetails(String nm,String cd,String rt,String uty,String pkng,in
     print("Inserted data =====> $res");
     return res;
   }
-  
+
   Future selectDetails(int i) async {
     final db = await database;
     List<Map> result =
@@ -65,41 +67,44 @@ Future insertItemDetails(String nm,String cd,String rt,String uty,String pkng,in
     result.forEach((row) => print("Selected data =====> $row"));
   }
 
-Future deleteAllDetails() async {
-   final db = await database;
-    var result =
-        await db.rawDelete('DELETE from printertable');
+  Future deleteAllDetails() async {
+    final db = await database;
+    var result = await db.rawDelete('DELETE from printertable');
     print("Deleted all data------------ $result");
     return result;
-}
+  }
+
   Future<List<Map>> allDetails() async {
     final db = await database;
     List<Map> result = await db.rawQuery('SELECT * FROM printertable');
     print("selected table------------$result");
     return result;
   }
+
   Future<List<Map<String, dynamic>>> allItemDetails() async {
     final db = await database;
-    List<Map<String, dynamic>> result = await db.rawQuery('SELECT * FROM itemtable');
+    List<Map<String, dynamic>> result =
+        await db.rawQuery('SELECT * FROM itemtable');
     print("selected item details all------------$result");
     return result;
   }
 
-  // updateDetails(int id, String name) async {
-  //   final db = await database;
-     
-  //   var result =
-  //       await db.rawUpdate('UPDATE printertable set name="$name" where id=$id');
-  //       print(name);
-  //   print("updation------------$result");
-  //   return result;
-  // }
- 
-deleteData(int id) async {
+  updateItemDetails(int id, String code, String rate, String unit,
+      String packing, String exp) async {
+    final db = await database;
+
+    var result = await db.rawUpdate(
+        'UPDATE itemtable set code="$code",rate="$rate",unit="$unit",packing="$packing",exp_days="$exp" where id=$id');
+    // print(name);
+    print("updated item------------$result");
+    return result;
+  }
+
+  deleteData(int id) async {
     final db = await database;
 
     var result =
-        await db.rawDelete('DELETE from printertable where id=?',[id]);
+        await db.rawDelete('DELETE from printertable where id=?', [id]);
     print("Deleted------------ $result");
     return result;
   }

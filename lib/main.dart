@@ -6,10 +6,11 @@ import 'package:flutter_simple_bluetooth_printer/flutter_simple_bluetooth_printe
 import 'package:month_year_picker/month_year_picker.dart';
 import 'package:simplefluttre/SCREENS/blutoothCon.dart';
 import 'package:simplefluttre/SCREENS/itemAdd.dart';
-import 'package:simplefluttre/SCREENS/labelselect.dart';
+import 'package:simplefluttre/ADMIN/homeAdmin.dart';
 import 'package:simplefluttre/CONTROLLER/printClass.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:simplefluttre/SCREENS/mainHome.dart';
 import 'package:simplefluttre/SCREENS/printPage.dart';
 
 void main() {
@@ -51,9 +52,10 @@ class MyApp extends StatelessWidget {
       home: 
       // LabelSelect(),
       // ItemADD(),
-       BluetoothConnection(),
+      //  BluetoothConnection(),
       // ConnectSelection()
       // PrintPage(),
+      MainHome(),
       localizationsDelegates: const [
         GlobalWidgetsLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,

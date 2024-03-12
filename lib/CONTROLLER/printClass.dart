@@ -31,9 +31,11 @@ class PrintMethod extends ChangeNotifier {
   String profile_string = '';
   Map<String, dynamic> selecteditem = {};
   List<Map<String, dynamic>> itemList = [];
+  List<Map<String, dynamic>> filteredItemList = [];
+  List<bool> isEditingList = [];
+  bool searchLoading = false;
   getprintProfile(BuildContext context, String pr_id, int ind) async {
-    NetConnection.networkConnection(context).then((value) async 
-    {
+    NetConnection.networkConnection(context).then((value) async {
       if (value == true) {
         dynamic_code = "";
         notifyListeners();
@@ -42,8 +44,7 @@ class PrintMethod extends ChangeNotifier {
           notifyListeners();
           Uri url =
               Uri.parse("https://trafiqerp.in/order/fj/print_profile.php");
-          Map body = 
-          {
+          Map body = {
             'print_id': pr_id,
             'type': "0",
           };
@@ -75,35 +76,36 @@ class PrintMethod extends ChangeNotifier {
             dynamic_code = config_data[0]['code'];
 
             print("Dymanic_CODE_----$dynamic_code");
-             await BarcodeDB.instance.deleteAllDetails();
-          await BarcodeDB.instance
-              .insertDetails(int.parse(pr_id), dynamic_code.toString());
-          print("inserted to local DDDDDDDDDDDDDBBBBBBB----");
-          getLabelProfile();
-          setLabelName(label_list[ind]['name'].toString());
-          
-          isprofileLoading = false;notifyListeners();
+            await BarcodeDB.instance.deleteAllDetails();
+            await BarcodeDB.instance
+                .insertDetails(int.parse(pr_id), dynamic_code.toString());
+            print("inserted to local DDDDDDDDDDDDDBBBBBBB----");
+            getLabelProfile();
+            setLabelName(label_list[ind]['name'].toString());
+
+            isprofileLoading = false;
+
+            notifyListeners();
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text('Alert'),
+                  content: Text('Config downloaded'),
+                  actions: <Widget>[
+                    TextButton(
+                      onPressed: () {
+                        // Close the AlertDialog
+                        Navigator.of(context).pop();
+                      },
+                      child: Text('OK'),
+                    ),
+                  ],
+                );
+              },
+            );
           }
 
-         
-          // showDialog(
-          //       context: context,
-          //       builder: (BuildContext context) {
-          //         return AlertDialog(
-          //           title: Text('Alert'),
-          //           content: Text('Config downloaded'),
-          //           actions: <Widget>[
-          //             TextButton(
-          //               onPressed: () {
-          //                 // Close the AlertDialog
-          //                 Navigator.of(context).pop();
-          //               },
-          //               child: Text('OK'),
-          //             ),
-          //           ],
-          //         );
-          //       },
-          //     );
           //     notifyListeners();
           //   }
           //  isprofileLoading=false;
@@ -117,7 +119,8 @@ class PrintMethod extends ChangeNotifier {
   }
 
   setLabelName(String lName) async {
-    label_name = lName;notifyListeners();
+    label_name = lName;
+    notifyListeners();
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setString("label_name", label_name);
     notifyListeners();
@@ -218,9 +221,26 @@ class PrintMethod extends ChangeNotifier {
     notifyListeners();
 
     itemList = await BarcodeDB.instance.allItemDetails();
+    filteredItemList = itemList;
+    isEditingList = List.generate(itemList.length, (index) => false);
     selecteditem = (itemList.isNotEmpty ? itemList[0] : null)!;
     notifyListeners();
     print("itemList------$itemList");
+  }
+
+  searchItem(String val) {
+    searchLoading = true;
+    notifyListeners();
+    filteredItemList = val.isEmpty
+        ? itemList
+        : itemList
+            .where((item) => item['name']
+                .toString()
+                .toLowerCase()
+                .contains(val.toLowerCase()))
+            .toList();
+    searchLoading = false;
+    notifyListeners();
   }
 
   getLabelProfile() async {
@@ -230,6 +250,13 @@ class PrintMethod extends ChangeNotifier {
     tableDatalist = await BarcodeDB.instance.allDetails();
     print("labelString-------------->${tableDatalist[0]['dynamicCode']}");
     profile_string = tableDatalist[0]['dynamicCode'].toString();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("prof_string", profile_string);
+    notifyListeners();
+  }
+
+  setProfileONEDit(String edited) async {
+    profile_string = edited;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("prof_string", profile_string);
     notifyListeners();
