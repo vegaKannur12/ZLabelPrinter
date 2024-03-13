@@ -6,7 +6,7 @@ import 'package:flutter_simple_bluetooth_printer/flutter_simple_bluetooth_printe
 import 'package:month_year_picker/month_year_picker.dart';
 import 'package:simplefluttre/SCREENS/blutoothCon.dart';
 import 'package:simplefluttre/SCREENS/itemAdd.dart';
-import 'package:simplefluttre/ADMIN/homeAdmin.dart';
+import 'package:simplefluttre/SCREENS/ADMIN/homeAdmin.dart';
 import 'package:simplefluttre/CONTROLLER/printClass.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -16,7 +16,7 @@ import 'package:simplefluttre/SCREENS/printPage.dart';
 void main() {
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider(create: (_) => PrintMethod()),
+      ChangeNotifierProvider(create: (_) => PrintController()),
       // ChangeNotifierProvider(create: (_) => RegistrationController()),
     ],
     child: const MyApp(),
@@ -49,6 +49,10 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
+       routes: {
+        '/mainhome': (context) => MainHome(),
+        '/bluetoothhome': (context) => BluetoothConnection(),
+      },
       home: 
       // LabelSelect(),
       // ItemADD(),

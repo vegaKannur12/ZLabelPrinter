@@ -3,7 +3,6 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:simplefluttre/ADMIN/loginAdmin.dart';
 import 'package:simplefluttre/CONTROLLER/printClass.dart';
 import 'package:simplefluttre/SCREENS/blutoothCon.dart';
 import 'package:simplefluttre/SCREENS/itemAdd.dart';
@@ -129,7 +128,7 @@ class _MainHomeState extends State<MainHome> {
                             MaterialPageRoute(builder: (context) => ItemADD()),
                           );
                         } else if (index == 1) {
-                          Provider.of<PrintMethod>(context, listen: false)
+                          Provider.of<PrintController>(context, listen: false)
                               .getItemList();
                           Navigator.push(
                             context,

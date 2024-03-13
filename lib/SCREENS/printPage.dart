@@ -40,7 +40,7 @@ class _PrintPageState extends State<PrintPage> {
     String datetoday = DateFormat('dd-MM-yyyy').format(DateTime.now());
     dateInput.text = DateFormat('dd-MM-yyyy').format(DateTime.now());
     qty_ctrl.text = "1";
-    Provider.of<PrintMethod>(context, listen: false).getItemList();
+    Provider.of<PrintController>(context, listen: false).getItemList();
     getProfile();
     super.initState();
   }
@@ -57,16 +57,16 @@ class _PrintPageState extends State<PrintPage> {
     print(size.width);
     return Scaffold(
       appBar: AppBar(
-        title: Consumer<PrintMethod>(
-            builder: (BuildContext context, PrintMethod value, Widget? child) {
+        title: Consumer<PrintController>(
+            builder: (BuildContext context, PrintController value, Widget? child) {
           return Text(pro_name.toString());
         }),
         // actions: [
         //   IconButton(onPressed: () {}, icon: Icon(Icons.document_scanner_sharp))
         // ],
       ),
-      body: Consumer<PrintMethod>(
-        builder: (BuildContext context, PrintMethod value, Widget? child) {
+      body: Consumer<PrintController>(
+        builder: (BuildContext context, PrintController value, Widget? child) {
           return Center(
             child: Form(
               key: _formKey,

@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:simplefluttre/ADMIN/loginAdmin.dart';
-import 'package:simplefluttre/ADMIN/loginAdminDialog.dart';
+import 'package:simplefluttre/SCREENS/ADMIN/loginAdminDialog.dart';
 import 'package:simplefluttre/LOCALDB/localDb.dart';
 import 'package:simplefluttre/LOCALDB/tablelist.dart';
 import 'package:simplefluttre/COMPONENTS/custom_snackbar.dart';
 import 'package:simplefluttre/SCREENS/itemAdd.dart';
-import 'package:simplefluttre/ADMIN/homeAdmin.dart';
+import 'package:simplefluttre/SCREENS/ADMIN/homeAdmin.dart';
 import 'package:simplefluttre/CONTROLLER/printClass.dart';
 import 'package:simplefluttre/SCREENS/printPage.dart';
 
@@ -22,14 +21,14 @@ class BluetoothConnection extends StatefulWidget {
 class _BluetoothConnectionState extends State<BluetoothConnection> {
   String pro = "";
   String pro_name = "";
-  // PrintMethod pm=PrintMethod();
+  // PrintController pm=PrintController();
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<PrintMethod>(context, listen: false).discovery();
+      Provider.of<PrintController>(context, listen: false).discovery();
       // subscription to listen change status of bluetooth connection
-      Provider.of<PrintMethod>(context, listen: false).subStatus();
-      Provider.of<PrintMethod>(context, listen: false).scan();
+      Provider.of<PrintController>(context, listen: false).subStatus();
+      Provider.of<PrintController>(context, listen: false).scan();
       getProfile();
     });
     super.initState();
@@ -79,8 +78,8 @@ class _BluetoothConnectionState extends State<BluetoothConnection> {
             ],
           ),
           actions: [
-            Consumer<PrintMethod>(
-                builder: (BuildContext context, PrintMethod value,
+            Consumer<PrintController>(
+                builder: (BuildContext context, PrintController value,
                         Widget? child) =>
                     // value.profile_string == "" || value.profile_string == " "
                     //     ? Container(
@@ -131,8 +130,8 @@ class _BluetoothConnectionState extends State<BluetoothConnection> {
                     )),
           ],
         ),
-        body: Consumer<PrintMethod>(
-          builder: (BuildContext context, PrintMethod value, Widget? child) {
+        body: Consumer<PrintController>(
+          builder: (BuildContext context, PrintController value, Widget? child) {
             return Center(
               child: Container(
                 height: double.infinity,
@@ -147,7 +146,7 @@ class _BluetoothConnectionState extends State<BluetoothConnection> {
                       ),
                       IconButton(
                         onPressed: () {
-                          Provider.of<PrintMethod>(context, listen: false)
+                          Provider.of<PrintController>(context, listen: false)
                               .scan();
                         },
                         icon: const Padding(

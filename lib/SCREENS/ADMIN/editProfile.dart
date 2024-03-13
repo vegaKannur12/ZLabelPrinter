@@ -41,8 +41,8 @@ class _EditProfileState extends State<EditProfile> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(),
-        body: Consumer<PrintMethod>(
-            builder: (BuildContext context, PrintMethod value, Widget? child) {
+        body: Consumer<PrintController>(
+            builder: (BuildContext context, PrintController value, Widget? child) {
           return SingleChildScrollView(
             child: Center(
               child: Column(
@@ -105,7 +105,7 @@ class _EditProfileState extends State<EditProfile> {
                             ),
                             ElevatedButton(
                               onPressed: () {
-                                Provider.of<PrintMethod>(context, listen: false)
+                                Provider.of<PrintController>(context, listen: false)
                                     .setProfileONEDit(editctrl.text.toString());
                                 getProfileString();
                                 setState(() {

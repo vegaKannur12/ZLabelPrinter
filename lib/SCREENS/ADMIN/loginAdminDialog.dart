@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:simplefluttre/ADMIN/homeAdmin.dart';
+import 'package:simplefluttre/SCREENS/ADMIN/homeAdmin.dart';
 import 'package:simplefluttre/COMPONENTS/custom_snackbar.dart';
 
 class LoginDialog extends StatefulWidget {

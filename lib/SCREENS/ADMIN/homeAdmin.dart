@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'package:provider/provider.dart';
-import 'package:simplefluttre/ADMIN/editProfile.dart';
+import 'package:simplefluttre/SCREENS/ADMIN/editProfile.dart';
 import 'package:simplefluttre/CONTROLLER/printClass.dart';
 
 class AdminHomePage extends StatefulWidget {
@@ -15,7 +16,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
   @override
   void initState() {
     // TODO: implement initState
-    Provider.of<PrintMethod>(context, listen: false)
+    Provider.of<PrintController>(context, listen: false)
         .getprintProfile(context, "0", 0);
     super.initState();
   }
@@ -24,8 +25,8 @@ class _AdminHomePageState extends State<AdminHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Consumer<PrintMethod>(
-        builder: (BuildContext context, PrintMethod value, Widget? child) {
+      body: Consumer<PrintController>(
+        builder: (BuildContext context, PrintController value, Widget? child) {
           return Center(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -48,7 +49,8 @@ class _AdminHomePageState extends State<AdminHomePage> {
                 ),
                 SizedBox(
                   height: 40,
-                ),
+                ),value.isprofileLoading?
+                SpinKitThreeBounce(color: Colors.green,size: 30,):
                 ListView.builder(
                   shrinkWrap: true,
                   padding: const EdgeInsets.all(2.0),
@@ -72,7 +74,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                               children: [
                                 IconButton(
                                     onPressed: () {
-                                      Provider.of<PrintMethod>(context,
+                                      Provider.of<PrintController>(context,
                                               listen: false)
                                           .getprintProfile(
                                               context,

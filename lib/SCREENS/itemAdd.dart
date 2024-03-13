@@ -40,8 +40,8 @@ class _ItemADDState extends State<ItemADD> {
           //   IconButton(onPressed: () {}, icon: Icon(Icons.document_scanner_sharp))
           // ],
           ),
-      body: Consumer<PrintMethod>(
-        builder: (BuildContext context, PrintMethod value, Widget? child) {
+      body: Consumer<PrintController>(
+        builder: (BuildContext context, PrintController value, Widget? child) {
           return Center(
             child: Form(
               key: _formKey,
@@ -290,7 +290,7 @@ class _ItemADDState extends State<ItemADD> {
                                 unit_ctrl.text.toString(),
                                 pkg_ctrl.text.toString(),
                                 int.parse(day_ctrl.text));
-                            Provider.of<PrintMethod>(context, listen: false)
+                            Provider.of<PrintController>(context, listen: false)
                                 .getItemList();
                                 name_ctrl.clear();
                                 code_ctrl.clear();

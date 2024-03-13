@@ -8,7 +8,7 @@ import 'package:simplefluttre/COMPONENTS/network_connectivity.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class PrintMethod extends ChangeNotifier {
+class PrintController extends ChangeNotifier {
   List label_list = [];
   List config_data = [];
   List detail_data = [];
@@ -32,6 +32,7 @@ class PrintMethod extends ChangeNotifier {
   Map<String, dynamic> selecteditem = {};
   List<Map<String, dynamic>> itemList = [];
   List<Map<String, dynamic>> filteredItemList = [];
+  List<Map<String, dynamic>> otherDetailsList = [];
   List<bool> isEditingList = [];
   bool searchLoading = false;
   getprintProfile(BuildContext context, String pr_id, int ind) async {
@@ -97,6 +98,7 @@ class PrintMethod extends ChangeNotifier {
                       onPressed: () {
                         // Close the AlertDialog
                         Navigator.of(context).pop();
+                        Navigator.pushNamed(context, '/bluetoothhome');
                       },
                       child: Text('OK'),
                     ),
@@ -261,14 +263,25 @@ class PrintMethod extends ChangeNotifier {
     prefs.setString("prof_string", profile_string);
     notifyListeners();
   }
+  setOtherDetails(String cusCare,String fssai)
+  async {
+    cuscare=cusCare.toString();
+    fssi=fssai.toString();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("cus_care", cuscare);
+    prefs.setString("fssai_no", fssi);
+    notifyListeners();
 
+  }
   void printLabel(String code, String itemname, String pkng, String mrp,
       String qty, String unit, String mfg, String usebefor) async {
     // List<Map> tableDatalist=[];
     // tableDatalist = await BarcodeDB.instance.allDetails();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String pro = prefs.getString("prof_string")!.toUpperCase();
-    print("profil-------------->$pro");
+    String fsi = prefs.getString("fssai_no")!.toUpperCase();
+    String cus = prefs.getString("cus_care")!.toUpperCase();
+    print("profil---->$pro\ncusCare------>$cus\nfsssai---->$fsi");
     String bcode = pro
         .replaceAll("<COMPANY>".toUpperCase(), comname.toString())
         .replaceAll("<Code>".toUpperCase(), code)
@@ -279,8 +292,8 @@ class PrintMethod extends ChangeNotifier {
         .replaceAll("<UNIT>".toUpperCase(), " ") //unit
         .replaceAll("<MfgDate>".toUpperCase(), mfg)
         .replaceAll("<UseBefore>".toUpperCase(), usebefor)
-        .replaceAll("<CustomerCare>".toUpperCase(), cuscare.toString())
-        .replaceAll("<FSSI>".toUpperCase(), fssi.toString());
+        .replaceAll("<CustomerCare>".toUpperCase(), cus)
+        .replaceAll("<FSSI>".toUpperCase(), fsi);
     print("cfc---------------$bcode");
     if (selectedPrinter == null) return;
     // final codes =

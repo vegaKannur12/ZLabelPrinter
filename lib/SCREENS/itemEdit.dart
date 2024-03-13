@@ -25,7 +25,7 @@ class _ItemEditState extends State<ItemEdit> {
   @override
   void initState() {
     // TODO: implement initState
-    // filteredItemList=Provider.of<PrintMethod>(context, listen: false).itemList;
+    // filteredItemList=Provider.of<PrintController>(context, listen: false).itemList;
     super.initState();
   }
 
@@ -50,8 +50,8 @@ class _ItemEditState extends State<ItemEdit> {
           //   IconButton(onPressed: () {}, icon: Icon(Icons.document_scanner_sharp))
           // ],
         ),
-        body: Consumer<PrintMethod>(
-            builder: (BuildContext context, PrintMethod value, Widget? child) {
+        body: Consumer<PrintController>(
+            builder: (BuildContext context, PrintController value, Widget? child) {
           return Padding(
             padding: const EdgeInsets.all(10),
             child: Column(
@@ -61,7 +61,7 @@ class _ItemEditState extends State<ItemEdit> {
                   controller: searchController, // Add a TextEditingController
                   onChanged: (val) {
                     setState(() {
-                      Provider.of<PrintMethod>(context, listen: false)
+                      Provider.of<PrintController>(context, listen: false)
                           .searchItem(val);
                       // Update the filteredItemList based on the search query
                     });
@@ -72,7 +72,7 @@ class _ItemEditState extends State<ItemEdit> {
                           borderRadius: BorderRadius.circular(10)),
                       suffixIcon:
                           IconButton(onPressed: () {
-                            Provider.of<PrintMethod>(context, listen: false)
+                            Provider.of<PrintController>(context, listen: false)
                           .searchItem("");
                           searchController.clear();
                           }, icon: Icon(Icons.close))),
@@ -276,7 +276,7 @@ class _ItemEditState extends State<ItemEdit> {
                                                     unit_ctrl.text.toString(),
                                                     pkg_ctrl.text.toString(),
                                                     day_ctrl.text.toString());
-                                            Provider.of<PrintMethod>(context,
+                                            Provider.of<PrintController>(context,
                                                     listen: false)
                                                 .getItemList();
                                             value.isEditingList[index] =
