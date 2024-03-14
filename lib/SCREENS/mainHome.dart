@@ -30,7 +30,7 @@ class _MainHomeState extends State<MainHome> {
     Menus(iconname: 'ITEM', iconimg: 'assets/add.png'),
     Menus(iconname: 'ITEM', iconimg: 'assets/edit.png'),
     Menus(iconname: 'STICKER', iconimg: 'assets/print.png'),
-    Menus(iconname: ' OTHER\r\nDETAILS', iconimg: 'assets/edit.png'),
+    // Menus(iconname: ' OTHER\r\nDETAILS', iconimg: 'assets/edit.png'),
   ];
 
   @override
@@ -142,13 +142,13 @@ class _MainHomeState extends State<MainHome> {
                                 builder: (context) => BluetoothConnection()),
                           );
                         }
-                         else if (index == 3) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => OtherEdit()),
-                          );
-                        }
+                        //  else if (index == 3) {
+                        //   Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => OtherEdit()),
+                        //   );
+                        // }
                       },
                     ),
                     SizedBox(

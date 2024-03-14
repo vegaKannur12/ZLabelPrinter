@@ -52,6 +52,7 @@ class MyApp extends StatelessWidget {
        routes: {
         '/mainhome': (context) => MainHome(),
         '/bluetoothhome': (context) => BluetoothConnection(),
+        '/adminhome': (context) =>AdminHomePage(),
       },
       home: 
       // LabelSelect(),

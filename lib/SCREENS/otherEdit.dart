@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:simplefluttre/COMPONENTS/custom_snackbar.dart';
 import 'package:simplefluttre/COMPONENTS/textfldCommon.dart';
 import 'package:simplefluttre/CONTROLLER/printClass.dart';
 
 class OtherEdit extends StatefulWidget {
-  const OtherEdit({super.key});
+  String cus_carNo;
+  String fssiNo;
+  OtherEdit({super.key, required this.cus_carNo, required this.fssiNo});
 
   @override
   State<OtherEdit> createState() => _OtherEditState();
@@ -15,78 +18,73 @@ class _OtherEditState extends State<OtherEdit> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController cuscare_ctrl = TextEditingController();
   TextEditingController fssai_ctrl = TextEditingController();
+  bool dataError = false;
+
+  bool is_editt = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.teal,
-          title: Center(
-              child: Text(
-            "ADD OTHER DETAILS",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          )),
-        ),
-        body: Consumer<PrintController>(
-            builder: (BuildContext context, PrintController value, Widget? child) {
-          return Center(
-              child: Form(
-                  key: _formKey,
-                  child: SingleChildScrollView(
-                      child: Column(mainAxisSize: MainAxisSize.min, children: [
+
+    return AlertDialog(
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "Edit Details",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
+          ),
+          IconButton(
+              onPressed: () {
+                setState(() {
+                  is_editt = true;
+                });
+              },
+              icon: Icon(Icons.edit,color: Colors.green,))
+        ],
+      ),
+      content: SingleChildScrollView(
+          child: is_editt
+              ? Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
                     const SizedBox(
                       height: 5,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 50,
-                          width: size.width / 1.15,
-                          child: Widget_TextField(
-                            isSuffix: true,
-                            controller: cuscare_ctrl,
-                            obscureNotifier: ValueNotifier<bool>(
-                                false), // For non-password field, you can set any initial value
-                            hintText: 'Customer Care Number',
-                            prefixIcon: Icons.phone_android,
-                            typeoffld: TextInputType.number,
-                            validator: (text) {
-                              if (text == null || text.isEmpty) {
-                                return 'Please Enter Customer Care Number';
-                              }
-                              return null;
-                            },
-                          ),
-                        )
-                      ],
+                    TextFormField(
+                      controller: cuscare_ctrl,
+                      decoration: InputDecoration(
+                        labelText: 'Customer Care',
+                        prefixIcon: Icon(Icons.phone_android),
+                      ),
+                      validator: (text) {
+                        if (text == null || text.isEmpty) {
+                          return 'Please Enter Customer Care Number';
+                        }
+                        return null;
+                      },
                     ),
                     const SizedBox(
                       height: 20,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 50,
-                          width: size.width / 1.15,
-                          child: Widget_TextField(
-                            isSuffix: true,
-                            controller: fssai_ctrl,
-                            obscureNotifier: ValueNotifier<bool>(
-                                false), // For non-password field, you can set any initial value
-                            hintText: 'fssai Number',
-                            prefixIcon: Icons.food_bank_rounded,
-                            typeoffld: TextInputType.number,
-                            validator: (text) {
-                              if (text == null || text.isEmpty) {
-                                return 'Please Enter fssai Number';
-                              }
-                              return null;
-                            },
-                          ),
-                        )
-                      ],
+                    TextFormField(
+                      controller: fssai_ctrl,
+                      decoration: InputDecoration(
+                        labelText: 'fssai Number',
+                        prefixIcon: Icon(Icons.food_bank_rounded),
+                      ),
+                      validator: (text) {
+                        if (text == null || text.isEmpty) {
+                          return 'Please Enter fssai Number';
+                        }
+                        return null;
+                      },
                     ),
                     const SizedBox(
                       height: 20,
@@ -107,14 +105,12 @@ class _OtherEditState extends State<OtherEdit> {
                         ),
                         onPressed: () async {
                           // if (_formKey.currentState!.validate()) {
-                          if (cuscare_ctrl.text.isEmpty) {
-                            CustomSnackbar snackbar = CustomSnackbar();
-                            snackbar.showSnackbar(
-                                context, "Enter Customercare no.", "");
-                          } else if (fssai_ctrl.text.isEmpty) {
-                            CustomSnackbar snackbar = CustomSnackbar();
-                            snackbar.showSnackbar(
-                                context, "Enter fssai no.", "");
+
+                          if (cuscare_ctrl.text.isEmpty ||
+                              fssai_ctrl.text.isEmpty) {
+                            setState(() {
+                              dataError = true;
+                            });
                           } else {
                             Provider.of<PrintController>(context, listen: false)
                                 .setOtherDetails(cuscare_ctrl.text.toString(),
@@ -122,6 +118,7 @@ class _OtherEditState extends State<OtherEdit> {
                             cuscare_ctrl.clear();
                             fssai_ctrl.clear();
                             showDialog(
+                              barrierDismissible: false,
                               context: context,
                               builder: (context) {
                                 return AlertDialog(
@@ -144,7 +141,9 @@ class _OtherEditState extends State<OtherEdit> {
                                       ),
                                       child: const Text('Ok'),
                                       onPressed: () async {
-                                        Navigator.pop(context);
+                                        Navigator.of(context).pop();
+                                        Navigator.pushNamed(
+                                            context, '/adminhome');
                                       },
                                     ),
                                   ],
@@ -155,7 +154,44 @@ class _OtherEditState extends State<OtherEdit> {
                         },
                       ),
                     ),
-                  ]))));
-        }));
+                    if (dataError)
+                      Text(
+                        'Fill all fields...',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                  ],
+                )
+              : Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(height: 33,width: 33,child: Image.asset("assets/cuc.png"),),
+                        Text(" ${widget.cus_carNo.toString()}"),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(height: 33,width: 33,child: Image.asset("assets/fss.png"),),
+                        Text(" ${widget.fssiNo.toString()}"),
+                      ],
+                    ),
+                  ],
+                )),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text('Cancel'),
+        ),
+      ],
+    );
   }
 }

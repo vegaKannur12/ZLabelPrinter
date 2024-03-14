@@ -23,9 +23,9 @@ class PrintController extends ChangeNotifier {
   var devices = <BluetoothDevice>[];
   StreamSubscription<BTConnectState>? _subscriptionBtStatus;
   BTConnectState currentStatus = BTConnectState.disconnect;
-  String comname = "CFC KANNUR";
+  String comname = "VEGA KANNUR";
   String cuscare = "190055666";
-  String fssi = "111122223333";
+  String fssi = "11112222333344";
   
   BluetoothDevice? selectedPrinter;
   String profile_string = '';
@@ -35,7 +35,7 @@ class PrintController extends ChangeNotifier {
   List<Map<String, dynamic>> otherDetailsList = [];
   List<bool> isEditingList = [];
   bool searchLoading = false;
-  getprintProfile(BuildContext context, String pr_id, int ind) async {
+  getprintProfile(BuildContext context, String pr_id, int ind,String com_id) async {
     NetConnection.networkConnection(context).then((value) async {
       if (value == true) {
         dynamic_code = "";
@@ -48,6 +48,7 @@ class PrintController extends ChangeNotifier {
           Map body = {
             'print_id': pr_id,
             'type': "0",
+            'company_id':com_id,
           };
           print("body----$body");
           http.Response response = await http.post(
@@ -270,6 +271,7 @@ class PrintController extends ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("cus_care", cuscare);
     prefs.setString("fssai_no", fssi);
+    print("CusCare---->$cuscare\n fssai---->$fssi");
     notifyListeners();
 
   }

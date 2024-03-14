@@ -35,11 +35,17 @@ class _ItemADDState extends State<ItemADD> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.red,title: Center(child: Text("ADD ITEM",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),)),
-          // actions: [
-          //   IconButton(onPressed: () {}, icon: Icon(Icons.document_scanner_sharp))
-          // ],
-          ),
+      appBar: AppBar(
+        backgroundColor: Colors.red,
+        title: Center(
+            child: Text(
+          "ADD ITEM",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        )),
+        // actions: [
+        //   IconButton(onPressed: () {}, icon: Icon(Icons.document_scanner_sharp))
+        // ],
+      ),
       body: Consumer<PrintController>(
         builder: (BuildContext context, PrintController value, Widget? child) {
           return Center(
@@ -194,7 +200,7 @@ class _ItemADDState extends State<ItemADD> {
                                     hintText: 'Packing',
                                     prefixIcon: Icons.padding,
 
-                                    typeoffld: TextInputType.number,
+                                    typeoffld: TextInputType.text,
 
                                     validator: (text) {
                                       if (text == null || text.isEmpty) {
@@ -218,8 +224,8 @@ class _ItemADDState extends State<ItemADD> {
                                   child: Widget_TextField(
                                     isSuffix: true,
                                     controller: day_ctrl,
-                                    obscureNotifier: ValueNotifier<bool>(
-                                        false), // For non-password field, you can set any initial value
+                                    obscureNotifier: ValueNotifier<bool>(false),
+                                    // For non-password field, you can set any initial value
                                     hintText: 'Expiry Days',
                                     prefixIcon: Icons.barcode_reader,
                                     typeoffld: TextInputType.number,
@@ -233,14 +239,13 @@ class _ItemADDState extends State<ItemADD> {
                                 )
                               ],
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 10,
                             ),
                           ],
                         ),
                       ),
                     ),
-
                     const SizedBox(
                       height: 30,
                     ),
@@ -249,7 +254,9 @@ class _ItemADDState extends State<ItemADD> {
                       width: 150,
                       child: ElevatedButton(
                         child: Text(
-                          "ADD",style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),
+                          "ADD",
+                          style: TextStyle(
+                              color: Colors.white, fontWeight: FontWeight.bold),
                         ),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black,
@@ -258,31 +265,20 @@ class _ItemADDState extends State<ItemADD> {
                         ),
                         onPressed: () async {
                           // if (_formKey.currentState!.validate()) {
-                            if (name_ctrl.text.isEmpty) {
-                              CustomSnackbar snackbar = CustomSnackbar();
-                              snackbar.showSnackbar(context, "Enter Name", "");
-                              
-                            }
-                            else if(code_ctrl.text.isEmpty)
-                            {
-                              CustomSnackbar snackbar = CustomSnackbar();
-                              snackbar.showSnackbar(context, "Enter Code", "");
-
-                            }
-                            else if(rate_ctrl.text.isEmpty)
-                            {
-                              CustomSnackbar snackbar = CustomSnackbar();
-                              snackbar.showSnackbar(context, "Enter Rate", "");
-
-                            }
-                            else if(day_ctrl.text.isEmpty)
-                            {
-                              CustomSnackbar snackbar = CustomSnackbar();
-                              snackbar.showSnackbar(context, "Enter Expiry Days", "");
-
-                            }
-                            else
-                            {
+                          if (name_ctrl.text.isEmpty) {
+                            CustomSnackbar snackbar = CustomSnackbar();
+                            snackbar.showSnackbar(context, "Enter Name", "");
+                          } else if (code_ctrl.text.isEmpty) {
+                            CustomSnackbar snackbar = CustomSnackbar();
+                            snackbar.showSnackbar(context, "Enter Code", "");
+                          } else if (rate_ctrl.text.isEmpty) {
+                            CustomSnackbar snackbar = CustomSnackbar();
+                            snackbar.showSnackbar(context, "Enter Rate", "");
+                          } else if (day_ctrl.text.isEmpty) {
+                            CustomSnackbar snackbar = CustomSnackbar();
+                            snackbar.showSnackbar(
+                                context, "Enter Expiry Days", "");
+                          } else {
                             await BarcodeDB.instance.insertItemDetails(
                                 name_ctrl.text.toString(),
                                 code_ctrl.text.toString(),
@@ -292,49 +288,49 @@ class _ItemADDState extends State<ItemADD> {
                                 int.parse(day_ctrl.text));
                             Provider.of<PrintController>(context, listen: false)
                                 .getItemList();
-                                name_ctrl.clear();
-                                code_ctrl.clear();
-                                rate_ctrl.clear();
-                                unit_ctrl.clear();
-                                pkg_ctrl.clear();
-                                day_ctrl.clear();
-                                showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "Item Added",
-                                          style: TextStyle(fontSize: 18),
-                                        ),
-                                      ],
-                                    ),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        style: TextButton.styleFrom(
-                                          textStyle: Theme.of(context)
-                                              .textTheme
-                                              .labelLarge,
-                                        ),
-                                        child: const Text('Ok'),
-                                        onPressed: () async {
-                                          // Provider.of<Controller>(context,
-                                          //         listen: false)
-                                          //     .clearCardID("0");
-                                          // Provider.of<Controller>(context,
-                                          //         listen: false)
-                                          //     .setcusnameAndPhone("", "", context);
-                                          Navigator.pop(context);
-                                          // Navigator.pushNamed(context, '/mainpage');
-                                        },
+                            name_ctrl.clear();
+                            code_ctrl.clear();
+                            rate_ctrl.clear();
+                            unit_ctrl.clear();
+                            pkg_ctrl.clear();
+                            day_ctrl.clear();
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "Item Added",
+                                        style: TextStyle(fontSize: 18),
                                       ),
                                     ],
-                                  );
-                                },
-                              );
+                                  ),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      style: TextButton.styleFrom(
+                                        textStyle: Theme.of(context)
+                                            .textTheme
+                                            .labelLarge,
+                                      ),
+                                      child: const Text('Ok'),
+                                      onPressed: () async {
+                                        // Provider.of<Controller>(context,
+                                        //         listen: false)
+                                        //     .clearCardID("0");
+                                        // Provider.of<Controller>(context,
+                                        //         listen: false)
+                                        //     .setcusnameAndPhone("", "", context);
+                                        Navigator.pop(context);
+                                        // Navigator.pushNamed(context, '/mainpage');
+                                      },
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
                           }
                         },
                       ),
